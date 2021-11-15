@@ -26,7 +26,7 @@ public class SnakeService {
             return snakeOptional.get();
         }else {
             throw new NotFoundException();
-        }
+        }        
     }
 
     public List<Snake> getSnakeByOwnerId(UUID ownerId) {

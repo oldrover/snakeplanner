@@ -55,7 +55,7 @@ public class SnakeResource {
 
     private  Snake convertFromDto(SnakeDto snakeDto) {
         return new Snake(UUID.fromString(snakeDto.getId()), UUID.fromString(snakeDto.getOwnerId()), snakeDto.getName(), snakeDto.getSpecies(), snakeDto.getSex(),
-                snakeDto.getBirthYear(), snakeDto.getWeight(), snakeDto.getSize(), snakeDto.getImage());
+                snakeDto.getBirthYear(), snakeDto.getWeight(), snakeDto.getSize(), snakeDto.getImage());                
     }
 
 

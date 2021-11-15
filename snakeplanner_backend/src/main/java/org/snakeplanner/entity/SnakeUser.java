@@ -14,14 +14,14 @@ public class SnakeUser {
     @PartitionKey
     private final UUID id;
 
-    private final String name;
+    private final String email;
 
     private final String password;  
 
 
-    public SnakeUser(UUID id, String name, String password) {
+    public SnakeUser(UUID id, String email, String password) {
         this.id = id;
-        this.name = name;
+        this.email = email;
         this.password = password;
     } 
 
@@ -29,8 +29,8 @@ public class SnakeUser {
         return this.id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getEmail() {
+        return this.email;
     }
 
     public String getPassword() {

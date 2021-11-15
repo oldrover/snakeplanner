@@ -1,5 +1,6 @@
 package org.snakeplanner.dao;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import com.datastax.oss.driver.api.mapper.annotations.Dao;
@@ -17,7 +18,7 @@ public interface SnakeUserDao {
     void update(SnakeUser snakeUser);
 
     @Select
-    SnakeUser findById(UUID id);
+    Optional<SnakeUser> findById(UUID id);
 
     @Delete(entityClass = SnakeUser.class)
     void delete(UUID id);
