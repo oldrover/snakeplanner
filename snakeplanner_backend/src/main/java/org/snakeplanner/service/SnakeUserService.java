@@ -21,5 +21,9 @@ public class SnakeUserService {
     public SnakeUser getUserById(UUID id) {        
         return snakeUserDao.findById(id);
     }
+
+    public void deleteUserById(UUID id) {
+        snakeUserDao.delete(id);
+    }
     
 }

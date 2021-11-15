@@ -4,13 +4,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.*;
 
 import org.snakeplanner.dto.SnakeUserDto;
 import org.snakeplanner.entity.SnakeUser;
@@ -32,6 +26,12 @@ public class SnakeUserResource {
     @Path("/{id}")        
     public SnakeUserDto getById(@PathParam("id") UUID id) { 
         return convertToDto(snakeUserService.getUserById(id));
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteById(@PathParam("id") UUID id) {
+        snakeUserService.deleteUserById(id);
     }
 
     private SnakeUserDto convertToDto(SnakeUser user) {
