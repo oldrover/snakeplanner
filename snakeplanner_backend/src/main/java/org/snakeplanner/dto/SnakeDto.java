@@ -3,13 +3,15 @@ package org.snakeplanner.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.UUID;
+
 public class SnakeDto {
 
     @JsonIgnore
-    private String id;
+    private UUID id;
 
     @JsonProperty
-    private String ownerId;
+    private UUID ownerId;
 
     @JsonProperty
     private String name;
@@ -35,7 +37,7 @@ public class SnakeDto {
 
     public SnakeDto() {}
 
-    public SnakeDto(String id, String ownerId, String name, String species, String sex,
+    public SnakeDto(UUID id, UUID ownerId, String name, String species, String sex,
                    Integer birthYear, Float weight, Float size, String image) {
       
         this.id = id;
@@ -49,18 +51,18 @@ public class SnakeDto {
         this.image = image;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getOwnerId() {
+    public UUID getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(String ownerId) {
+    public void setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
     }
 

@@ -1,11 +1,9 @@
 package org.snakeplanner.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 public class EventDto {

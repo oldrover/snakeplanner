@@ -3,10 +3,12 @@ package org.snakeplanner.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.UUID;
+
 public class SnakeUserDto {
 
     @JsonIgnore
-    private String id;
+    private UUID id;
 
     @JsonProperty
     private String email;
@@ -16,13 +18,13 @@ public class SnakeUserDto {
 
     public SnakeUserDto() {}
 
-    public SnakeUserDto(String id, String email, String password) {        
+    public SnakeUserDto(UUID id, String email, String password) {
         this.id = id;
         this.email = email;
         this.password = password;
     }
 
-    public String getId() {
+    public UUID getId() {
         return this.id;
     }
 
@@ -34,7 +36,7 @@ public class SnakeUserDto {
         return this.password;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -22,7 +22,7 @@ public class SnakeResource {
 
     @POST
     public void addSnake(SnakeDto snakeDto) {
-        snakeDto.setId(UUID.randomUUID().toString());
+        snakeDto.setId(UUID.randomUUID());
         snakeService.saveSnake(convertFromDto(snakeDto));
     }
 
@@ -48,13 +48,13 @@ public class SnakeResource {
     }
 
     private  SnakeDto convertToDto(Snake snake) {
-        return new SnakeDto(snake.getId().toString(), snake.getOwnerId().toString(), snake.getName(), snake.getSpecies(), snake.getSex(),
+        return new SnakeDto(snake.getId(), snake.getOwnerId(), snake.getName(), snake.getSpecies(), snake.getSex(),
                 snake.getBirthYear(), snake.getWeight(), snake.getSize(), snake.getImage());
 
     }
 
     private  Snake convertFromDto(SnakeDto snakeDto) {
-        return new Snake(UUID.fromString(snakeDto.getId()), UUID.fromString(snakeDto.getOwnerId()), snakeDto.getName(), snakeDto.getSpecies(), snakeDto.getSex(),
+        return new Snake(snakeDto.getId(), snakeDto.getOwnerId(), snakeDto.getName(), snakeDto.getSpecies(), snakeDto.getSex(),
                 snakeDto.getBirthYear(), snakeDto.getWeight(), snakeDto.getSize(), snakeDto.getImage());                
     }
 

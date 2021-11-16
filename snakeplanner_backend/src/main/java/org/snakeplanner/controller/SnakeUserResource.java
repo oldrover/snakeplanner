@@ -18,7 +18,7 @@ public class SnakeUserResource {
 
     @POST    
     public void add(SnakeUserDto user) {
-        user.setId(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID());
         snakeUserService.saveUser(convertFromDto(user));
     }
 
@@ -35,10 +35,10 @@ public class SnakeUserResource {
     }
 
     private SnakeUserDto convertToDto(SnakeUser user) {
-        return new SnakeUserDto(user.getId().toString(), user.getEmail(), user.getPassword());
+        return new SnakeUserDto(user.getId(), user.getEmail(), user.getPassword());
       }
     
       private SnakeUser convertFromDto(SnakeUserDto snakeUserDto) {
-        return new SnakeUser(UUID.fromString(snakeUserDto.getId()), snakeUserDto.getEmail(), snakeUserDto.getPassword());
+        return new SnakeUser(snakeUserDto.getId(), snakeUserDto.getEmail(), snakeUserDto.getPassword());
       }
 }
