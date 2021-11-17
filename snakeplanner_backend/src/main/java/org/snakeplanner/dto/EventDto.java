@@ -1,6 +1,7 @@
 package org.snakeplanner.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.json.bind.annotation.JsonbDateFormat;
 import java.time.LocalDate;
@@ -8,47 +9,51 @@ import java.util.UUID;
 
 public class EventDto {
 
+    @JsonProperty
+    private String snakeId;
+
     @JsonIgnore
-    private UUID id;
+    private UUID eventId;
 
-    private UUID snakeId;
-
+    @JsonProperty
     private String type;
 
-    @JsonbDateFormat("yyyy-MM-dd")
+    @JsonProperty
+    @JsonbDateFormat("yyyy.MM.dd")
     private LocalDate date;
 
+    @JsonProperty
     private  String info;
 
     public EventDto() {
     }
 
-    public EventDto(UUID id, UUID snakeId, String type, LocalDate date, String info) {
-        this.id = id;
+    public EventDto(String snakeId, UUID eventId, String type, LocalDate date, String info) {
         this.snakeId = snakeId;
+        this.eventId = eventId;
         this.type = type;
         this.date = date;
         this.info = info;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getEventId() {
+        return this.eventId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
     }
 
-    public UUID getSnakeId() {
-        return snakeId;
+    public String getSnakeId() {
+        return this.snakeId;
     }
 
-    public void setSnakeId(UUID snakeId) {
+    public void setSnakeId(String snakeId) {
         this.snakeId = snakeId;
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -56,7 +61,7 @@ public class EventDto {
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(LocalDate date) {
@@ -64,7 +69,7 @@ public class EventDto {
     }
 
     public String getInfo() {
-        return info;
+        return this.info;
     }
 
     public void setInfo(String info) {

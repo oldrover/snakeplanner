@@ -27,13 +27,13 @@ public class EventResource {
 
     @GET
     @Path("{snakeId}/{id}")
-    public EventDto getEventById(@PathParam("snakeId") UUID snakeId, @PathParam("id") UUID id) {
+    public EventDto getEventById(@PathParam("snakeId") String snakeId, @PathParam("id") UUID id) {
         return convertToDto(eventService.getEventById(snakeId, id));
     }
 
     @GET
     @Path("{snakeId}")
-    public List<EventDto> getEventsBySnakeId(@PathParam("snakeId") UUID snakeId) {
+    public List<EventDto> getEventsBySnakeId(@PathParam("snakeId") String snakeId) {
         return eventService.getEventsBySnakeId(snakeId)
                 .stream()
                 .map(this::convertToDto)
@@ -42,16 +42,16 @@ public class EventResource {
 
     @DELETE
     @Path("/{snakeId}/{eventId}")
-    public void deleteEventById(@PathParam("snakeId") UUID snakeId, @PathParam("eventId") UUID eventId) {
+    public void deleteEventById(@PathParam("snakeId") String snakeId, @PathParam("eventId") UUID eventId) {
         eventService.deleteEventById(snakeId, eventId);
     }
 
 
     private Event convertFromDto(EventDto eventDto) {
-        return new Event(UUID.randomUUID(), eventDto.getSnakeId(), eventDto.getType(), eventDto.getDate(), eventDto.getInfo());
+        return new Event(eventDto.getSnakeId(), UUID.randomUUID(), eventDto.getType(), eventDto.getDate(), eventDto.getInfo());
     }
     private EventDto convertToDto(Event event) {
-        return new EventDto(event.getId(),event.getSnakeId(), event.getType(), event.getDate(), event.getInfo());
+        return new EventDto(event.getSnakeId(), event.getEventId(), event.getType(), event.getDate(), event.getInfo());
     }
 
 

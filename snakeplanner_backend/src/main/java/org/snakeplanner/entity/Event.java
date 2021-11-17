@@ -1,22 +1,19 @@
 package org.snakeplanner.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
-import com.datastax.oss.driver.api.mapper.annotations.ClusteringColumn;
-import com.datastax.oss.driver.api.mapper.annotations.Entity;
-import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
-import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
+import com.datastax.oss.driver.api.mapper.annotations.*;
 
 @Entity
 @PropertyStrategy(mutable = false)
 public class Event {
 
-    @ClusteringColumn
-    private final UUID id;
     @PartitionKey
-    private final UUID snakeId;
+    private final String snakeId;
+
+    @ClusteringColumn
+    private final UUID eventId;
 
     private final String type;
 
@@ -24,31 +21,31 @@ public class Event {
 
     private final String info;
 
-    public Event(UUID id, UUID snakeId, String type, LocalDate date, String info) {
-        this.id = id;
+    public Event(String snakeId, UUID eventId,  String type, LocalDate date, String info) {
         this.snakeId = snakeId;
+        this.eventId = eventId;
         this.type = type;
         this.date = date;
         this.info = info;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getEventId() {
+        return this.eventId;
     }
 
-    public UUID getSnakeId() {
-        return snakeId;
+    public String getSnakeId() {
+        return this.snakeId;
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public String getInfo() {
-        return info;
+        return this.info;
     }
 }

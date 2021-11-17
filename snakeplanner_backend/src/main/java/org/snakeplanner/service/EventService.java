@@ -1,5 +1,6 @@
 package org.snakeplanner.service;
 
+import com.datastax.oss.driver.api.core.PagingIterable;
 import org.snakeplanner.dao.EventDao;
 import org.snakeplanner.entity.Event;
 
@@ -20,8 +21,8 @@ public class EventService {
         eventDao.update(event);
     }
 
-    public Event getEventById(UUID snakeId, UUID id) {
-        Optional<Event> eventOptional = eventDao.findById(snakeId, id);
+    public Event getEventById(String snakeId, UUID eventId) {
+        Optional<Event> eventOptional = eventDao.findById(snakeId, eventId);
 
         if(eventOptional.isPresent()) {
             return eventOptional.get();
@@ -30,12 +31,13 @@ public class EventService {
         }
     }
 
-    public List<Event> getEventsBySnakeId(UUID snakeId) {
+    public List<Event> getEventsBySnakeId(String snakeId) {
         return eventDao.findBySnakeId(snakeId).all();
+
     }
 
-    public void deleteEventById(UUID snakeId, UUID id) {
-        eventDao.delete( snakeId, id);
+    public void deleteEventById(String snakeId, UUID eventId) {
+        eventDao.delete( snakeId, eventId);
     }
 
 }

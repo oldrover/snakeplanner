@@ -1,10 +1,7 @@
 package org.snakeplanner.dao;
 
 import com.datastax.oss.driver.api.core.PagingIterable;
-import com.datastax.oss.driver.api.mapper.annotations.Dao;
-import com.datastax.oss.driver.api.mapper.annotations.Delete;
-import com.datastax.oss.driver.api.mapper.annotations.Select;
-import com.datastax.oss.driver.api.mapper.annotations.Update;
+import com.datastax.oss.driver.api.mapper.annotations.*;
 import org.snakeplanner.entity.Event;
 
 import java.util.Optional;
@@ -17,11 +14,11 @@ public interface EventDao {
     void update(Event event);
 
     @Select
-    Optional<Event> findById(UUID snakeId, UUID id);
+    Optional<Event> findById(String snakeId, UUID eventId);
 
     @Select(customWhereClause = "snake_id = :snakeId")
-    PagingIterable<Event> findBySnakeId(UUID snakeId);
+    PagingIterable<Event> findBySnakeId(String snakeId);
 
     @Delete(entityClass = Event.class)
-    void delete(UUID snakeId, UUID id);
+    void delete(String snakeId, UUID eventId);
 }
