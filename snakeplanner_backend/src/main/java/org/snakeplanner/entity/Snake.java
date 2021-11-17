@@ -11,10 +11,11 @@ import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 @PropertyStrategy(mutable = false)
 public class Snake {
 
-    @ClusteringColumn
-    private final UUID id;
     @PartitionKey
-    private final UUID ownerId;
+    private final String ownerId;
+
+    @ClusteringColumn
+    private final UUID snakeId;
 
     private final String name;
 
@@ -30,9 +31,9 @@ public class Snake {
 
     private final String image;
 
-    public Snake(UUID id, UUID ownerId, String name, String species, String sex, Integer birthYear, Float weight, Float size, String image) {
-        this.id = id;
+    public Snake(String ownerId, UUID snakeId, String name, String species, String sex, Integer birthYear, Float weight, Float size, String image) {
         this.ownerId = ownerId;
+        this.snakeId = snakeId;
         this.name = name;
         this.species = species;
         this.sex = sex;
@@ -42,12 +43,12 @@ public class Snake {
         this.image = image;
     }
 
-    public UUID getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public UUID getId() {
-        return this.id;
+    public UUID getSnakeId() {
+        return this.snakeId;
     }
 
     public String getName() {

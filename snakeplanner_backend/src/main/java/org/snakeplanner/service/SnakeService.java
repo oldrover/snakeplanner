@@ -19,8 +19,8 @@ public class SnakeService {
         snakeDao.update(snake);
     }
 
-    public Snake getSnakeById(UUID ownerId,UUID id) {
-        Optional<Snake> snakeOptional = snakeDao.findById(ownerId, id);
+    public Snake getSnakeById(String ownerId,UUID snakeId) {
+        Optional<Snake> snakeOptional = snakeDao.findById(ownerId, snakeId);
 
         if(snakeOptional.isPresent()) {
             return snakeOptional.get();
@@ -29,12 +29,12 @@ public class SnakeService {
         }        
     }
 
-    public List<Snake> getSnakeByOwnerId(UUID ownerId) {
+    public List<Snake> getSnakeByOwnerId(String ownerId) {
         return snakeDao.findByOwnerId(ownerId).all();
     }
 
-    public void deleteSnakeById(UUID ownerId, UUID id) {        
-        snakeDao.delete( ownerId, id);
+    public void deleteSnakeById(String ownerId, UUID snakeId) {
+        snakeDao.delete( ownerId, snakeId);
     }
     
 }

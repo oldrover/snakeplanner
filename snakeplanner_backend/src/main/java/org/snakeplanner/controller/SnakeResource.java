@@ -22,19 +22,18 @@ public class SnakeResource {
 
     @POST
     public void addSnake(SnakeDto snakeDto) {
-        snakeDto.setId(UUID.randomUUID());
         snakeService.saveSnake(convertFromDto(snakeDto));
     }
 
     @GET
     @Path("/{ownerId}/{id}")
-    public SnakeDto getSnakeById(@PathParam("ownerId") UUID ownerId, @PathParam("id") UUID id) {
-        return convertToDto(snakeService.getSnakeById(ownerId, id));
+    public SnakeDto getSnakeById(@PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
+        return convertToDto(snakeService.getSnakeById(ownerId, snakeId));
     }
 
     @GET
     @Path("/{ownerId}")
-    public List<SnakeDto> getSnakesByOwnerId(@PathParam("ownerId") UUID ownerId) {
+    public List<SnakeDto> getSnakesByOwnerId(@PathParam("ownerId") String ownerId) {
         return snakeService.getSnakeByOwnerId(ownerId)
                 .stream()
                 .map(this::convertToDto)
@@ -43,18 +42,18 @@ public class SnakeResource {
 
     @DELETE
     @Path("/{ownerId}/{id}")
-    public void deleteSnakeById(@PathParam("ownerId") UUID ownerId, @PathParam("id") UUID id) {
-        snakeService.deleteSnakeById(ownerId, id);
+    public void deleteSnakeById(@PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
+        snakeService.deleteSnakeById(ownerId, snakeId);
     }
 
     private  SnakeDto convertToDto(Snake snake) {
-        return new SnakeDto(snake.getId(), snake.getOwnerId(), snake.getName(), snake.getSpecies(), snake.getSex(),
+        return new SnakeDto(snake.getOwnerId(), snake.getSnakeId(), snake.getName(), snake.getSpecies(), snake.getSex(),
                 snake.getBirthYear(), snake.getWeight(), snake.getSize(), snake.getImage());
 
     }
 
     private  Snake convertFromDto(SnakeDto snakeDto) {
-        return new Snake(snakeDto.getId(), snakeDto.getOwnerId(), snakeDto.getName(), snakeDto.getSpecies(), snakeDto.getSex(),
+        return new Snake(snakeDto.getOwnerId(), UUID.randomUUID(), snakeDto.getName(), snakeDto.getSpecies(), snakeDto.getSex(),
                 snakeDto.getBirthYear(), snakeDto.getWeight(), snakeDto.getSize(), snakeDto.getImage());                
     }
 

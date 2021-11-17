@@ -17,12 +17,12 @@ public interface SnakeDao {
     void update(Snake snake);
 
     @Select
-    Optional<Snake> findById(UUID ownerId, UUID id);
+    Optional<Snake> findById(String ownerId, UUID id);
 
     @Select(customWhereClause = "owner_id = :ownerId")
-    PagingIterable<Snake> findByOwnerId(UUID ownerId);
+    PagingIterable<Snake> findByOwnerId(String ownerId);
 
     @Delete(entityClass = Snake.class)
-    void delete(UUID ownerId, UUID id);
+    void delete(String ownerId, UUID id);
     
 }

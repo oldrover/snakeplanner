@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public class SnakeDto {
 
-    @JsonIgnore
-    private UUID id;
-
     @JsonProperty
-    private UUID ownerId;
+    private String ownerId;
+
+    @JsonIgnore
+    private UUID snakeId;
 
     @JsonProperty
     private String name;
@@ -37,11 +37,11 @@ public class SnakeDto {
 
     public SnakeDto() {}
 
-    public SnakeDto(UUID id, UUID ownerId, String name, String species, String sex,
+    public SnakeDto(String ownerId, UUID snakeId, String name, String species, String sex,
                    Integer birthYear, Float weight, Float size, String image) {
       
-        this.id = id;
         this.ownerId = ownerId;
+        this.snakeId = snakeId;
         this.name = name;
         this.species = species;
         this.sex = sex;
@@ -51,23 +51,23 @@ public class SnakeDto {
         this.image = image;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getSnakeId() {
+        return this.snakeId;
     }
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getOwnerId() {
-        return ownerId;
+    public void setSnakeId(UUID snakeId) {
+        this.snakeId = snakeId;
     }
 
-    public void setOwnerId(UUID ownerId) {
+    public String getOwnerId() {
+        return this.ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -75,7 +75,7 @@ public class SnakeDto {
     }
 
     public String getSpecies() {
-        return species;
+        return this.species;
     }
 
     public void setSpecies(String species) {
@@ -83,7 +83,7 @@ public class SnakeDto {
     }
 
     public String getSex() {
-        return sex;
+        return this.sex;
     }
 
     public void setSex(String sex) {
@@ -91,7 +91,7 @@ public class SnakeDto {
     }
 
     public Integer getBirthYear() {
-        return birthYear;
+        return this.birthYear;
     }
 
     public void setBirthYear(Integer birthYear) {
@@ -99,7 +99,7 @@ public class SnakeDto {
     }
 
     public Float getWeight() {
-        return weight;
+        return this.weight;
     }
 
     public void setWeight(Float weight) {
@@ -107,7 +107,7 @@ public class SnakeDto {
     }
 
     public Float getSize() {
-        return size;
+        return this.size;
     }
 
     public void setSize(Float size) {
@@ -115,7 +115,7 @@ public class SnakeDto {
     }
 
     public String getImage() {
-        return image;
+        return this.image;
     }
 
     public void setImage(String image) {
