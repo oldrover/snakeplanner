@@ -2,123 +2,121 @@ package org.snakeplanner.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.UUID;
 
 public class SnakeDto {
 
-    @JsonProperty
-    private String ownerId;
+  @JsonProperty private String ownerId;
 
-    @JsonIgnore
-    private UUID snakeId;
+  @JsonIgnore private UUID snakeId;
 
-    @JsonProperty
-    private String name;
+  @JsonProperty private String name;
 
-    @JsonProperty
-    private String species;
+  @JsonProperty private String species;
 
-    @JsonProperty
-    private String sex;
+  @JsonProperty private String sex;
 
-    @JsonProperty
-    private Integer birthYear;
+  @JsonProperty private Integer birthYear;
 
-    @JsonProperty
-    private Float weight;
+  @JsonProperty private Float weight;
 
-    @JsonProperty
-    private Float size;
+  @JsonProperty private Float size;
 
-    @JsonProperty
-    private String image;
+  @JsonProperty private String image;
 
+  public SnakeDto() {}
 
-    public SnakeDto() {}
+  public SnakeDto(
+      String ownerId,
+      UUID snakeId,
+      String name,
+      String species,
+      String sex,
+      Integer birthYear,
+      Float weight,
+      Float size,
+      String image) {
 
-    public SnakeDto(String ownerId, UUID snakeId, String name, String species, String sex,
-                   Integer birthYear, Float weight, Float size, String image) {
-      
-        this.ownerId = ownerId;
-        this.snakeId = snakeId;
-        this.name = name;
-        this.species = species;
-        this.sex = sex;
-        this.birthYear = birthYear;
-        this.weight = weight;
-        this.size = size;
-        this.image = image;
-    }
+    this.ownerId = ownerId;
+    this.snakeId = snakeId;
+    this.name = name;
+    this.species = species;
+    this.sex = sex;
+    this.birthYear = birthYear;
+    this.weight = weight;
+    this.size = size;
+    this.image = image;
+  }
 
-    public UUID getSnakeId() {
-        return this.snakeId;
-    }
-    public void setSnakeId(UUID snakeId) {
-        this.snakeId = snakeId;
-    }
+  public UUID getSnakeId() {
+    return this.snakeId;
+  }
 
-    public String getOwnerId() {
-        return this.ownerId;
-    }
+  public void setSnakeId(UUID snakeId) {
+    this.snakeId = snakeId;
+  }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
+  public String getOwnerId() {
+    return this.ownerId;
+  }
 
-    public String getName() {
-        return this.name;
-    }
+  public void setOwnerId(String ownerId) {
+    this.ownerId = ownerId;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public String getSpecies() {
-        return this.species;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setSpecies(String species) {
-        this.species = species;
-    }
+  public String getSpecies() {
+    return this.species;
+  }
 
-    public String getSex() {
-        return this.sex;
-    }
+  public void setSpecies(String species) {
+    this.species = species;
+  }
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
+  public String getSex() {
+    return this.sex;
+  }
 
-    public Integer getBirthYear() {
-        return this.birthYear;
-    }
+  public void setSex(String sex) {
+    this.sex = sex;
+  }
 
-    public void setBirthYear(Integer birthYear) {
-        this.birthYear = birthYear;
-    }
+  public Integer getBirthYear() {
+    return this.birthYear;
+  }
 
-    public Float getWeight() {
-        return this.weight;
-    }
+  public void setBirthYear(Integer birthYear) {
+    this.birthYear = birthYear;
+  }
 
-    public void setWeight(Float weight) {
-        this.weight = weight;
-    }
+  public Float getWeight() {
+    return this.weight;
+  }
 
-    public Float getSize() {
-        return this.size;
-    }
+  public void setWeight(Float weight) {
+    this.weight = weight;
+  }
 
-    public void setSize(Float size) {
-        this.size = size;
-    }
+  public Float getSize() {
+    return this.size;
+  }
 
-    public String getImage() {
-        return this.image;
-    }
+  public void setSize(Float size) {
+    this.size = size;
+  }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+  public String getImage() {
+    return this.image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
 }

@@ -7,6 +7,6 @@ import org.snakeplanner.dao.EventDao;
 @Mapper
 public interface EventMapper {
 
-    @DaoFactory
-    EventDao eventDao();
+  @DaoFactory
+  EventDao eventDao();
 }
