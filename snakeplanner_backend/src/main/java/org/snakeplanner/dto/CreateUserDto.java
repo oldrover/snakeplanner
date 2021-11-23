@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class CreateUserDto {
 
-    @JsonProperty private UUID id;
+    @JsonIgnore private UUID id;
 
     @JsonProperty private String email;
 
