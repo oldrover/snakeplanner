@@ -7,7 +7,9 @@ import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import org.snakeplanner.dao.SnakeUserDao;
+import org.snakeplanner.dto.CreateUserDto;
 import org.snakeplanner.dto.LoginDto;
+import org.snakeplanner.dto.SnakeUserDto;
 import org.snakeplanner.entity.SnakeUser;
 import org.snakeplanner.security.GenerateJWT;
 
@@ -17,30 +19,19 @@ public class SnakeUserService {
   @Inject SnakeUserDao snakeUserDao;
   @Inject HashService hashService;
   @Inject GenerateJWT generateJWT;
+  @Inject AuthenticationService authenticationService;
 
   public void saveUser(SnakeUser snakeUser) {
-
-    if (isEmailAvailable(snakeUser.getEmail())) {
-      //TODO: generate the Password
-      // snakeUser.generatePassword()
-      snakeUserDao.update(snakeUser);
-    } else {
-      throw new InternalServerErrorException();
-    }
+    snakeUserDao.update(snakeUser);
   }
 
   public SnakeUser loginUser(LoginDto loginDto) {
-    String pwd = loginDto.getPassword();
-    Optional<SnakeUser> optionalUser = snakeUserDao.findByEmail(loginDto.getEmail());
+    SnakeUser snakeUser = authenticationService.authenticate(loginDto);
 
-    if(optionalUser.isEmpty()) {
+    if(snakeUser == null){
       throw new InternalServerErrorException();
     }
-    SnakeUser returnedUser = optionalUser.get();
-    if(!returnedUser.getPassword().equals(pwd)) {
-      throw new InternalServerErrorException();
-    }
-    return returnedUser;
+    return snakeUser;
   }
 
   public SnakeUser getUserByEmailAndId(String email, UUID id) {
@@ -64,16 +55,17 @@ public class SnakeUserService {
     snakeUserDao.deleteByEmailAndId(returnedUser.getEmail(), returnedUser.getId());
   }
 
-  private Boolean isEmailAvailable(String email) {
+  public Boolean isEmailAvailable(String email) {
     return snakeUserDao.findByEmail(email).isEmpty();
   }
 
-  private String generatePassword(String password) {
+  public SnakeUser generateUserWithHashedPassword(CreateUserDto createUserDto) {
     SecureRandom random = new SecureRandom();
     byte[] salt = new byte[16];
     random.nextBytes(salt);
     String encodedSalt = Base64.getEncoder().encodeToString(salt);
-    return hashService.getHashedValue(password, encodedSalt);
+    String hashedPassword = hashService.getHashedValue(createUserDto.getPassword(), encodedSalt);
+    return new SnakeUser(createUserDto.getEmail(),createUserDto.getId(), encodedSalt, hashedPassword);
   }
 
   public String generateUserJWT(String email) {

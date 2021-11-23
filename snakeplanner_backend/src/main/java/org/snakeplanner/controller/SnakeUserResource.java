@@ -1,6 +1,5 @@
 package org.snakeplanner.controller;
 
-import java.util.Date;
 import java.util.UUID;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -25,8 +24,14 @@ public class SnakeUserResource {
   @PermitAll  
   public Response createUser(CreateUserDto createUserDto) {
     try {
+      if(!snakeUserService.isEmailAvailable(createUserDto.getEmail())){
+        throw new InternalServerErrorException();
+      }
+
       createUserDto.setId(UUID.randomUUID());
-      snakeUserService.saveUser(convertFromDto(createUserDto));
+      SnakeUser snakeUser = snakeUserService.generateUserWithHashedPassword(createUserDto);
+      snakeUserService.saveUser(snakeUser);
+
       return Response
               .ok(buildCreateResponse(createUserDto))
               .build();
@@ -98,9 +103,9 @@ public class SnakeUserResource {
     return new SnakeUserDto(user.getId(), user.getEmail());
   }
 
-  private SnakeUser convertFromDto(CreateUserDto createUserDto) {
-    return new SnakeUser( createUserDto.getEmail(),createUserDto.getId(), createUserDto.getPassword());
-  }
+  /*private SnakeUser convertFromDto(CreateUserDto createUserDto) {
+    return new SnakeUser( createUserDto.getEmail(),createUserDto.getId(), salt, createUserDto.getPassword());
+  }*/
 
   private SnakeUserDto buildCreateResponse(CreateUserDto createUserDto) {
     return new SnakeUserDto(createUserDto.getId(), createUserDto.getEmail());

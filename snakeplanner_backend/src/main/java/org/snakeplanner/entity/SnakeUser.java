@@ -14,11 +14,14 @@ public class SnakeUser {
 
   @ClusteringColumn private final UUID id;
 
+  private final String salt;
+
   private final String password;
 
-  public SnakeUser(String email, UUID id, String password) {
+  public SnakeUser(String email, UUID id, String salt, String password) {
     this.email = email;
     this.id = id;
+    this.salt = salt;
     this.password = password;
   }
 
@@ -28,6 +31,10 @@ public class SnakeUser {
 
   public String getEmail() {
     return this.email;
+  }
+
+  public String getSalt() {
+    return salt;
   }
 
   public String getPassword() {
