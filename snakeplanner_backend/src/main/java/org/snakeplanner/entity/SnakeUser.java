@@ -10,15 +10,15 @@ import java.util.UUID;
 @PropertyStrategy(mutable = false)
 public class SnakeUser {
 
-  @PartitionKey private final UUID id;
+  @PartitionKey private final String email;
 
-  @ClusteringColumn private final String email;
+  @ClusteringColumn private final UUID id;
 
   private final String password;
 
-  public SnakeUser(UUID id, String email, String password) {
-    this.id = id;
+  public SnakeUser(String email, UUID id, String password) {
     this.email = email;
+    this.id = id;
     this.password = password;
   }
 

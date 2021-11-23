@@ -1,14 +1,13 @@
 package org.snakeplanner.service;
 
 import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import org.snakeplanner.dao.SnakeUserDao;
+import org.snakeplanner.dto.LoginDto;
 import org.snakeplanner.entity.SnakeUser;
 import org.snakeplanner.security.GenerateJWT;
 
@@ -22,25 +21,47 @@ public class SnakeUserService {
   public void saveUser(SnakeUser snakeUser) {
 
     if (isEmailAvailable(snakeUser.getEmail())) {
+      //TODO: generate the Password
       // snakeUser.generatePassword()
       snakeUserDao.update(snakeUser);
     } else {
-      throw new InternalServerErrorException("Email already taken");
+      throw new InternalServerErrorException();
     }
   }
 
-  public SnakeUser getUserById(UUID id) {
-    Optional<SnakeUser> optionalUser = snakeUserDao.findById(id);
+  public SnakeUser loginUser(LoginDto loginDto) {
+    String pwd = loginDto.getPassword();
+    Optional<SnakeUser> optionalUser = snakeUserDao.findByEmail(loginDto.getEmail());
+
+    if(optionalUser.isEmpty()) {
+      throw new InternalServerErrorException();
+    }
+    SnakeUser returnedUser = optionalUser.get();
+    if(!returnedUser.getPassword().equals(pwd)) {
+      throw new InternalServerErrorException();
+    }
+    return returnedUser;
+  }
+
+  public SnakeUser getUserByEmailAndId(String email, UUID id) {
+
+    Optional<SnakeUser> optionalUser = snakeUserDao.findByEmailAndId(email, id);
 
     if (optionalUser.isPresent()) {
-      return optionalUser.get();
+      SnakeUser returnedUser = optionalUser.get();
+      if(returnedUser.getEmail().equals(email)) {
+        return returnedUser;
+      } else {
+        throw new InternalServerErrorException();
+      }
     } else {
       throw new NotFoundException();
     }
   }
 
-  public void deleteUserById(UUID id) {
-    snakeUserDao.delete(id);
+  public void deleteUserByEmailAndId(String email, UUID id) {
+    SnakeUser returnedUser = getUserByEmailAndId(email, id);
+    snakeUserDao.deleteByEmailAndId(returnedUser.getEmail(), returnedUser.getId());
   }
 
   private Boolean isEmailAvailable(String email) {

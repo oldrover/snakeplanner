@@ -15,11 +15,11 @@ public interface SnakeUserDao {
   void update(SnakeUser snakeUser);
 
   @Select
-  Optional<SnakeUser> findById(UUID id);
+  Optional<SnakeUser> findByEmailAndId(String email, UUID id);
 
-  @Select(customWhereClause = "email = :email ALLOW FILTERING")
+  @Select
   Optional<SnakeUser> findByEmail(String email);
 
   @Delete(entityClass = SnakeUser.class)
-  void delete(UUID id);
+  void deleteByEmailAndId(String email, UUID id);
 }
