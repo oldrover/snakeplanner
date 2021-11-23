@@ -18,6 +18,6 @@ public interface EventDao {
   @Select(customWhereClause = "snake_id = :snakeId")
   PagingIterable<Event> findBySnakeId(String snakeId);
 
-  @Delete(entityClass = Event.class)
-  void delete(String snakeId, UUID eventId);
+  @Delete(entityClass = Event.class, ifExists = true)
+  boolean delete(String snakeId, UUID eventId);
 }

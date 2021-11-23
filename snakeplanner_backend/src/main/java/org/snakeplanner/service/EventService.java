@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import org.snakeplanner.dao.EventDao;
 import org.snakeplanner.entity.Event;
@@ -24,7 +25,7 @@ public class EventService {
     if (eventOptional.isPresent()) {
       return eventOptional.get();
     } else {
-      throw new NotFoundException();
+      throw new InternalServerErrorException();
     }
   }
 
@@ -32,7 +33,7 @@ public class EventService {
     return eventDao.findBySnakeId(snakeId).all();
   }
 
-  public void deleteEventById(String snakeId, UUID eventId) {
-    eventDao.delete(snakeId, eventId);
+  public boolean deleteEventById(String snakeId, UUID eventId) {
+    return eventDao.delete(snakeId, eventId);
   }
 }
