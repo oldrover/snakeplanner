@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import org.snakeplanner.dao.SnakeDao;
 import org.snakeplanner.entity.Snake;
@@ -24,7 +25,7 @@ public class SnakeService {
     if (snakeOptional.isPresent()) {
       return snakeOptional.get();
     } else {
-      throw new NotFoundException();
+      throw new InternalServerErrorException();
     }
   }
 
@@ -32,7 +33,7 @@ public class SnakeService {
     return snakeDao.findByOwnerId(ownerId).all();
   }
 
-  public void deleteSnakeById(String ownerId, UUID snakeId) {
-    snakeDao.delete(ownerId, snakeId);
+  public boolean deleteSnakeById(String ownerId, UUID snakeId) {
+    return snakeDao.delete(ownerId, snakeId);
   }
 }

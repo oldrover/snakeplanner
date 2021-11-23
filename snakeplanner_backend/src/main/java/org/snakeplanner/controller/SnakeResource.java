@@ -3,46 +3,82 @@ package org.snakeplanner.controller;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.snakeplanner.dto.SnakeDto;
 import org.snakeplanner.entity.Snake;
 import org.snakeplanner.service.SnakeService;
 
-@Path("/snakes")
+@Path("/api/snakes")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class SnakeResource {
 
   @Inject SnakeService snakeService;
 
   @POST
-  public void addSnake(SnakeDto snakeDto) {
-    snakeService.saveSnake(convertFromDto(snakeDto));
+  @RolesAllowed("User")
+  public Response addSnake(SnakeDto snakeDto) {
+    try {
+      snakeDto.setSnakeId(UUID.randomUUID());
+      snakeService.saveSnake(convertFromDto(snakeDto));
+      return Response
+              .ok("Snake created")
+              .build();
+    }catch(InternalServerErrorException exception) {
+      return Response
+              .ok("Was not able to create Snake")
+              .build();
+    }
   }
 
   @GET
-  @Path("/{ownerId}/{id}")
-  public SnakeDto getSnakeById(
-      @PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
-    return convertToDto(snakeService.getSnakeById(ownerId, snakeId));
+  @Path("/{ownerId}/{snakeId}")
+  @RolesAllowed("User")
+  public Response getSnakeById(@PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
+    try {
+      SnakeDto foundSnake = convertToDto(snakeService.getSnakeById(ownerId, snakeId));
+      return Response
+              .ok(foundSnake)
+              .build();
+       }catch(InternalServerErrorException exception) {
+      return Response
+              .ok("Snake not found")
+              .build();
+    }
   }
 
   @GET
   @Path("/{ownerId}")
-  public List<SnakeDto> getSnakesByOwnerId(@PathParam("ownerId") String ownerId) {
-    return snakeService.getSnakeByOwnerId(ownerId).stream()
+  @RolesAllowed("User")
+  public Response getSnakesByOwnerId(@PathParam("ownerId") String ownerId) {
+    List<SnakeDto> snakeList = snakeService.getSnakeByOwnerId(ownerId).stream()
         .map(this::convertToDto)
         .collect(Collectors.toList());
+
+    return Response
+            .ok(snakeList)
+            .build();
   }
 
   @DELETE
-  @Path("/{ownerId}/{id}")
-  public void deleteSnakeById(
-      @PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
-    snakeService.deleteSnakeById(ownerId, snakeId);
+  @Path("/{ownerId}/{snakeId}")
+  @RolesAllowed("User")
+  public Response deleteSnakeById(@PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
+
+      if(snakeService.deleteSnakeById(ownerId, snakeId)) {
+        return Response
+                .ok("Snake successfully deleted")
+                .build();
+      } else {
+        return Response
+                .ok("Was not able to delete the snake")
+                .build();
+      }
   }
 
   private SnakeDto convertToDto(Snake snake) {
@@ -61,7 +97,7 @@ public class SnakeResource {
   private Snake convertFromDto(SnakeDto snakeDto) {
     return new Snake(
         snakeDto.getOwnerId(),
-        UUID.randomUUID(),
+        snakeDto.getSnakeId(),
         snakeDto.getName(),
         snakeDto.getSpecies(),
         snakeDto.getSex(),
