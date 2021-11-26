@@ -1,4 +1,4 @@
-package org.snakeplanner.dao;
+package org.snakeplanner.repository.dao;
 
 import com.datastax.oss.driver.api.core.PagingIterable;
 import com.datastax.oss.driver.api.mapper.annotations.*;

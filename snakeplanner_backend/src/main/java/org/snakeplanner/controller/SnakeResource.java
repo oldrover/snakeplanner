@@ -22,7 +22,7 @@ public class SnakeResource {
 
   @POST
   @RolesAllowed("User")
-  public Response addSnake(SnakeDto snakeDto) {
+  public Response createSnake(SnakeDto snakeDto) {
     try {
       snakeDto.setSnakeId(UUID.randomUUID());
       snakeService.saveSnake(convertFromDto(snakeDto));
@@ -56,7 +56,7 @@ public class SnakeResource {
   @Path("/{ownerId}")
   @RolesAllowed("User")
   public Response getSnakesByOwnerId(@PathParam("ownerId") String ownerId) {
-    List<SnakeDto> snakeList = snakeService.getSnakeByOwnerId(ownerId).stream()
+    List<SnakeDto> snakeList = snakeService.getSnakesByOwnerId(ownerId).stream()
         .map(this::convertToDto)
         .collect(Collectors.toList());
 

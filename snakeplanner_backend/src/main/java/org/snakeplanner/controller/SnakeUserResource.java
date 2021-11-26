@@ -49,8 +49,11 @@ public class SnakeUserResource {
   public Response loginUser(LoginDto loginDto) {
     String jwt;
     try {
-      SnakeUserDto foundUser = convertToDto(snakeUserService.loginUser(loginDto));
-      jwt = snakeUserService.generateUserJWT(foundUser.getEmail());
+      SnakeUser sn = snakeUserService.loginUser(loginDto);
+      SnakeUserDto foundUser = convertToDto(sn);
+
+
+      jwt = snakeUserService.generateUserJWT(foundUser.getEmail(), 864000000);
       return Response
               .ok(foundUser)
               .header("Authentication", "Bearer " + jwt)

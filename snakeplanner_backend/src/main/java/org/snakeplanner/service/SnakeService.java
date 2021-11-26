@@ -6,8 +6,8 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotFoundException;
-import org.snakeplanner.dao.SnakeDao;
+
+import org.snakeplanner.repository.dao.SnakeDao;
 import org.snakeplanner.entity.Snake;
 
 @ApplicationScoped
@@ -29,7 +29,7 @@ public class SnakeService {
     }
   }
 
-  public List<Snake> getSnakeByOwnerId(String ownerId) {
+  public List<Snake> getSnakesByOwnerId(String ownerId) {
     return snakeDao.findByOwnerId(ownerId).all();
   }
 

@@ -23,17 +23,17 @@ public class EventResource {
 
   @POST
   @RolesAllowed("User")
-  public Response addEvent(EventDto eventDto) {
+  public Response createEvent(EventDto eventDto) {
     try {
       eventDto.setEventId(UUID.randomUUID());
       eventService.saveEvent(convertFromDto(eventDto));
       return Response
-              .ok("event created")
+              .ok("Event created")
               .build();
 
     }catch (Exception exception) {
       return Response
-              .ok("was not able to create event")
+              .ok("Was not able to create event")
               .build();
     }
   }

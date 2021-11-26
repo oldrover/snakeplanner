@@ -6,10 +6,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
-import org.snakeplanner.dao.SnakeUserDao;
+import org.snakeplanner.repository.dao.SnakeUserDao;
 import org.snakeplanner.dto.CreateUserDto;
 import org.snakeplanner.dto.LoginDto;
-import org.snakeplanner.dto.SnakeUserDto;
 import org.snakeplanner.entity.SnakeUser;
 import org.snakeplanner.security.GenerateJWT;
 
@@ -68,7 +67,7 @@ public class SnakeUserService {
     return new SnakeUser(createUserDto.getEmail(),createUserDto.getId(), encodedSalt, hashedPassword);
   }
 
-  public String generateUserJWT(String email) {
-    return generateJWT.generate(email);
+  public String generateUserJWT(String email, int expiration) {
+    return generateJWT.generate(email, expiration);
   }
 }

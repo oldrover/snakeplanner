@@ -1,7 +1,6 @@
 package org.snakeplanner.service;
 
-import org.jboss.resteasy.spi.InternalServerErrorException;
-import org.snakeplanner.dao.SnakeUserDao;
+import org.snakeplanner.repository.dao.SnakeUserDao;
 import org.snakeplanner.dto.LoginDto;
 import org.snakeplanner.entity.SnakeUser;
 

@@ -21,10 +21,10 @@ public class GenerateJWT {
     public GenerateJWT() throws GeneralSecurityException, IOException {
     }
 
-    public String generate(String email) {
+    public String generate(String email, int expiration) {
         return Jwt.issuer("https://example.com/issuer")
                 .upn(email)
-                .expiresIn(864000000)
+                .expiresIn(expiration)
                 .groups(new HashSet<>(Arrays.asList("User", "Admin")))
                 .sign(privateKey);
     }
