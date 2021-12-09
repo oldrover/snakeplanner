@@ -44,7 +44,7 @@ public class SnakeUserResourceTest {
     void setUp() {
         CreateUserDto createUserDto = new CreateUserDto(null, "test@test.de", "password");
         SnakeUser snakeUser = new SnakeUser("test@test.de", uuid, "salt", "password");
-        jwt = generateJWT.generate("test@test.de", 500);
+        jwt = generateJWT.generate("test@test.de", 60);
         when(snakeUserService.isEmailAvailable("test@test.de")).thenReturn(true);
         when(snakeUserService.isEmailAvailable("wrong@test.de")).thenReturn(false);
         when(snakeUserService.generateUserWithHashedPassword(createUserDto)).thenReturn(snakeUser);

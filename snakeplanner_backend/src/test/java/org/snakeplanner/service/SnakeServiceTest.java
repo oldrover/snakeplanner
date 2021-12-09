@@ -1,22 +1,21 @@
-package service;
+package org.snakeplanner.service;
 
-import com.datastax.oss.driver.api.core.PagingIterable;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
+
 import org.snakeplanner.entity.Snake;
 import org.snakeplanner.repository.dao.SnakeDao;
-import org.snakeplanner.service.SnakeService;
 
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
+
 
 @QuarkusTest
 public class SnakeServiceTest {
@@ -29,7 +28,6 @@ public class SnakeServiceTest {
 
     private Snake snake;
 
-
     @BeforeEach
     void setUp() {
         UUID ownerId = UUID.randomUUID();
@@ -37,10 +35,10 @@ public class SnakeServiceTest {
         snake = new Snake(ownerId.toString(), uuid,"TestName", "TestSpecies",
                 "male",2010,(float)500,(float)150,"TestImageSrc");
 
+        MockPISnake mockPISnake = new MockPISnake(snake);
         when(snakeDao.findById(ownerId.toString(), uuid)).thenReturn(Optional.of(snake));
         when(snakeDao.findById(ownerId.toString(), null)).thenReturn(Optional.empty());
-        //when(snakeDao.findByOwnerId(ownerId.toString())).thenReturn();
-
+        when(snakeDao.findByOwnerId(ownerId.toString())).thenReturn(mockPISnake);
     }
 
     @Test
@@ -51,10 +49,11 @@ public class SnakeServiceTest {
 
     @Test
     public void whenFindSnakeByWrongId_thenThrowError() {
-        Assertions.assertThrows(InternalServerErrorException.class,() -> snakeService.getSnakeById(snake.getOwnerId(),null));
+        Assertions.assertThrows(InternalServerErrorException.class,() ->
+                snakeService.getSnakeById(snake.getOwnerId(),null));
     }
 
-    @Disabled
+
     @Test
     public void whenFindSnakesByOwnerId_thenReturnSnakes() {
         List<Snake> foundSnake = snakeService.getSnakesByOwnerId(snake.getOwnerId());
@@ -63,7 +62,8 @@ public class SnakeServiceTest {
 
     @Test
     public void whenDeleteSnake_thenNotThrowException() {
-        Assertions.assertDoesNotThrow(() -> snakeService.deleteSnakeById(snake.getOwnerId(), snake.getSnakeId()));
+        Assertions.assertDoesNotThrow(() ->
+                snakeService.deleteSnakeById(snake.getOwnerId(), snake.getSnakeId()));
 
     }
 

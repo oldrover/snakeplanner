@@ -39,7 +39,7 @@ public class EventResourceTest {
     void setUp() {
         Event event = new Event(snakeId.toString(), null, "feed",
                 LocalDate.of(2021,10,20),"jumper");
-        jwt = generateJWT.generate("test@test.de", 500);
+        jwt = generateJWT.generate("test@test.de", 60);
 
         when(eventService.getEventById(snakeId.toString(), uuid)).thenReturn(event);
         when(eventService.getEventById(snakeId.toString(), wrongId)).thenThrow(InternalServerErrorException.class);

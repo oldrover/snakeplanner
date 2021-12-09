@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.snakeplanner.dto.CreateUserDto;
 import org.snakeplanner.dto.LoginDto;
 import org.snakeplanner.dto.SnakeUserDto;
@@ -19,6 +20,10 @@ import org.snakeplanner.service.SnakeUserService;
 public class SnakeUserResource {
 
   @Inject SnakeUserService snakeUserService;
+  @Inject
+  JsonWebToken jsonWebToken;
+
+  private final Integer expirationTime = 900;
 
   @POST
   @PermitAll  
@@ -53,13 +58,14 @@ public class SnakeUserResource {
       SnakeUserDto foundUser = convertToDto(sn);
 
 
-      jwt = snakeUserService.generateUserJWT(foundUser.getEmail(), 864000000);
+      jwt = snakeUserService.generateUserJWT(foundUser.getEmail(), expirationTime);
+
       return Response
               .ok(foundUser)
               .header("Authentication", "Bearer " + jwt)
               .build();
 
-    } catch (InternalServerErrorException exception){
+    } catch (Exception exception){
       return Response
               .ok("User not found/Credentials error")
               .build();
@@ -71,6 +77,7 @@ public class SnakeUserResource {
   @Path("/{id}")
   @RolesAllowed("User")
   public Response getUserById(@PathParam("id") UUID id, @Context SecurityContext ctx) {
+    System.out.println("Expiration Time: " + jsonWebToken.getExpirationTime());
     try {
       SnakeUserDto foundUser = convertToDto(snakeUserService.getUserByEmailAndId(ctx.getUserPrincipal().getName(), id));
       return Response

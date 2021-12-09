@@ -38,7 +38,7 @@ public class SnakeResourceTest {
     void setUp() {
         Snake snake = new Snake(ownerId.toString(),uuid,"Snake","snake","male",
                 2010,(float) 500, (float) 150, "image");
-        jwt = generateJWT.generate("test@test.de", 500);
+        jwt = generateJWT.generate("test@test.de", 60);
 
         when(snakeService.getSnakeById(ownerId.toString(), uuid)).thenReturn(snake);
         when(snakeService.getSnakeById(ownerId.toString(), wrongId)).thenThrow(InternalServerErrorException.class);

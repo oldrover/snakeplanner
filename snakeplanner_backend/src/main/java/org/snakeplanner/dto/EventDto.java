@@ -15,7 +15,7 @@ public class EventDto {
   @JsonProperty private String type;
 
   @JsonProperty
-  @JsonbDateFormat("yyyy.MM.dd")
+  @JsonbDateFormat("yyyy/MM/dd")
   private LocalDate date;
 
   @JsonProperty private String info;

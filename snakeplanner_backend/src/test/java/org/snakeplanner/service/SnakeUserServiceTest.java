@@ -1,4 +1,4 @@
-package service;
+package org.snakeplanner.service;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;

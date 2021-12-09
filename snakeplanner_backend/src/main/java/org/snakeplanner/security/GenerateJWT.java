@@ -1,8 +1,6 @@
 package org.snakeplanner.security;
 
 import io.smallrye.jwt.build.Jwt;
-import org.eclipse.microprofile.jwt.Claims;
-
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;

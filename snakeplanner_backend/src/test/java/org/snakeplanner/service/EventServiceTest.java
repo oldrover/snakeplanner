@@ -1,4 +1,4 @@
-package service;
+package org.snakeplanner.service;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
@@ -37,8 +37,11 @@ public class EventServiceTest {
         UUID uuid = UUID.randomUUID();
         event = new Event(snakeId.toString(), uuid, "feed",
                 LocalDate.of(2021,10,20),"jumper");
+
+        MockPIEvent mockPIEvent = new MockPIEvent(event);
         when(eventDao.findById(snakeId.toString(), uuid)).thenReturn(Optional.of(event));
         when(eventDao.findById(snakeId.toString(), null)).thenReturn(Optional.empty());
+        when(eventDao.findBySnakeId(snakeId.toString())).thenReturn(mockPIEvent);
     }
 
     @Test
@@ -52,7 +55,6 @@ public class EventServiceTest {
         Assertions.assertThrows(InternalServerErrorException.class,() -> eventService.getEventById(event.getSnakeId(),null));
     }
 
-    @Disabled
     @Test
     public void whenFindEventsBySnakeId_thenReturnEvents() {
         List<Event> foundEvent = eventService.getEventsBySnakeId(event.getSnakeId());
