@@ -6,9 +6,8 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
-
-import org.snakeplanner.repository.dao.EventDao;
 import org.snakeplanner.entity.Event;
+import org.snakeplanner.repository.dao.EventDao;
 
 @ApplicationScoped
 public class EventService {

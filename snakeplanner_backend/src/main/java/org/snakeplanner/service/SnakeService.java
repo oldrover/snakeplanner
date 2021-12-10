@@ -6,9 +6,8 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
-
-import org.snakeplanner.repository.dao.SnakeDao;
 import org.snakeplanner.entity.Snake;
+import org.snakeplanner.repository.dao.SnakeDao;
 
 @ApplicationScoped
 public class SnakeService {

@@ -6,7 +6,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.snakeplanner.dto.CreateUserDto;
 import org.snakeplanner.dto.LoginDto;
@@ -20,16 +19,15 @@ import org.snakeplanner.service.SnakeUserService;
 public class SnakeUserResource {
 
   @Inject SnakeUserService snakeUserService;
-  @Inject
-  JsonWebToken jsonWebToken;
+  @Inject JsonWebToken jsonWebToken;
 
   private final Integer expirationTime = 900;
 
   @POST
-  @PermitAll  
+  @PermitAll
   public Response createUser(CreateUserDto createUserDto) {
     try {
-      if(!snakeUserService.isEmailAvailable(createUserDto.getEmail())){
+      if (!snakeUserService.isEmailAvailable(createUserDto.getEmail())) {
         throw new InternalServerErrorException();
       }
 
@@ -37,40 +35,29 @@ public class SnakeUserResource {
       SnakeUser snakeUser = snakeUserService.generateUserWithHashedPassword(createUserDto);
       snakeUserService.saveUser(snakeUser);
 
-      return Response
-              .ok(buildCreateResponse(createUserDto))
-              .build();
+      return Response.ok(buildCreateResponse(createUserDto)).build();
 
     } catch (InternalServerErrorException exception) {
-      return Response
-              .ok("Email already taken")
-              .build();
+      return Response.ok("Email already taken").build();
     }
   }
 
   @POST
   @Path("login")
-  @PermitAll  
+  @PermitAll
   public Response loginUser(LoginDto loginDto) {
     String jwt;
     try {
       SnakeUser sn = snakeUserService.loginUser(loginDto);
       SnakeUserDto foundUser = convertToDto(sn);
 
-
       jwt = snakeUserService.generateUserJWT(foundUser.getEmail(), expirationTime);
 
-      return Response
-              .ok(foundUser)
-              .header("Authentication", "Bearer " + jwt)
-              .build();
+      return Response.ok(foundUser).header("Authentication", "Bearer " + jwt).build();
 
-    } catch (Exception exception){
-      return Response
-              .ok("User not found/Credentials error")
-              .build();
+    } catch (Exception exception) {
+      return Response.ok("User not found/Credentials error").build();
     }
-
   }
 
   @GET
@@ -79,16 +66,12 @@ public class SnakeUserResource {
   public Response getUserById(@PathParam("id") UUID id, @Context SecurityContext ctx) {
     System.out.println("Expiration Time: " + jsonWebToken.getExpirationTime());
     try {
-      SnakeUserDto foundUser = convertToDto(snakeUserService.getUserByEmailAndId(ctx.getUserPrincipal().getName(), id));
-      return Response
-              .ok(foundUser)
-              .build();
+      SnakeUserDto foundUser =
+          convertToDto(snakeUserService.getUserByEmailAndId(ctx.getUserPrincipal().getName(), id));
+      return Response.ok(foundUser).build();
 
-    } catch(InternalServerErrorException exception) {
-      return Response
-              .ok("User not found")
-              .build();
-
+    } catch (InternalServerErrorException exception) {
+      return Response.ok("User not found").build();
     }
   }
 
@@ -98,14 +81,10 @@ public class SnakeUserResource {
   public Response deleteUserById(@PathParam("id") UUID id, @Context SecurityContext ctx) {
     try {
       snakeUserService.deleteUserByEmailAndId(ctx.getUserPrincipal().getName(), id);
-      return Response
-              .ok()
-              .build();
-      
-      }catch(InternalServerErrorException exception) {
-      return Response
-              .ok("You don't have permission")
-              .build();
+      return Response.ok().build();
+
+    } catch (InternalServerErrorException exception) {
+      return Response.ok("You don't have permission").build();
     }
   }
 

@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.snakeplanner.dto.SnakeDto;
 import org.snakeplanner.entity.Snake;
 import org.snakeplanner.service.SnakeService;
@@ -26,29 +25,22 @@ public class SnakeResource {
     try {
       snakeDto.setSnakeId(UUID.randomUUID());
       snakeService.saveSnake(convertFromDto(snakeDto));
-      return Response
-              .ok("Snake created")
-              .build();
-    }catch(InternalServerErrorException exception) {
-      return Response
-              .ok("Was not able to create Snake")
-              .build();
+      return Response.ok("Snake created").build();
+    } catch (InternalServerErrorException exception) {
+      return Response.ok("Was not able to create Snake").build();
     }
   }
 
   @GET
   @Path("/{ownerId}/{snakeId}")
   @RolesAllowed("User")
-  public Response getSnakeById(@PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
+  public Response getSnakeById(
+      @PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
     try {
       SnakeDto foundSnake = convertToDto(snakeService.getSnakeById(ownerId, snakeId));
-      return Response
-              .ok(foundSnake)
-              .build();
-       }catch(InternalServerErrorException exception) {
-      return Response
-              .ok("Snake not found")
-              .build();
+      return Response.ok(foundSnake).build();
+    } catch (InternalServerErrorException exception) {
+      return Response.ok("Snake not found").build();
     }
   }
 
@@ -56,29 +48,25 @@ public class SnakeResource {
   @Path("/{ownerId}")
   @RolesAllowed("User")
   public Response getSnakesByOwnerId(@PathParam("ownerId") String ownerId) {
-    List<SnakeDto> snakeList = snakeService.getSnakesByOwnerId(ownerId).stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
+    List<SnakeDto> snakeList =
+        snakeService.getSnakesByOwnerId(ownerId).stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
 
-    return Response
-            .ok(snakeList)
-            .build();
+    return Response.ok(snakeList).build();
   }
 
   @DELETE
   @Path("/{ownerId}/{snakeId}")
   @RolesAllowed("User")
-  public Response deleteSnakeById(@PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
+  public Response deleteSnakeById(
+      @PathParam("ownerId") String ownerId, @PathParam("snakeId") UUID snakeId) {
 
-      if(snakeService.deleteSnakeById(ownerId, snakeId)) {
-        return Response
-                .ok("Snake successfully deleted")
-                .build();
-      } else {
-        return Response
-                .ok("Was not able to delete the snake")
-                .build();
-      }
+    if (snakeService.deleteSnakeById(ownerId, snakeId)) {
+      return Response.ok("Snake successfully deleted").build();
+    } else {
+      return Response.ok("Was not able to delete the snake").build();
+    }
   }
 
   private SnakeDto convertToDto(Snake snake) {

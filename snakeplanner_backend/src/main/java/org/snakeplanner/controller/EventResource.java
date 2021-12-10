@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.snakeplanner.dto.EventDto;
 import org.snakeplanner.entity.Event;
@@ -27,30 +26,23 @@ public class EventResource {
     try {
       eventDto.setEventId(UUID.randomUUID());
       eventService.saveEvent(convertFromDto(eventDto));
-      return Response
-              .ok("Event created")
-              .build();
+      return Response.ok("Event created").build();
 
-    }catch (Exception exception) {
-      return Response
-              .ok("Was not able to create event")
-              .build();
+    } catch (Exception exception) {
+      return Response.ok("Was not able to create event").build();
     }
   }
 
   @GET
   @Path("{snakeId}/{eventId}")
   @RolesAllowed("User")
-  public Response getEventById(@PathParam("snakeId") String snakeId, @PathParam("eventId") UUID eventId) {
+  public Response getEventById(
+      @PathParam("snakeId") String snakeId, @PathParam("eventId") UUID eventId) {
     try {
-      EventDto foundEvent =  convertToDto(eventService.getEventById(snakeId, eventId));
-      return Response
-              .ok(foundEvent)
-              .build();
-    }catch (InternalServerErrorException exception) {
-      return Response
-              .ok("Event not found")
-              .build();
+      EventDto foundEvent = convertToDto(eventService.getEventById(snakeId, eventId));
+      return Response.ok(foundEvent).build();
+    } catch (InternalServerErrorException exception) {
+      return Response.ok("Event not found").build();
     }
   }
 
@@ -58,13 +50,12 @@ public class EventResource {
   @Path("{snakeId}")
   @RolesAllowed("User")
   public Response getEventsBySnakeId(@PathParam("snakeId") String snakeId) {
-    List<EventDto> eventList = eventService.getEventsBySnakeId(snakeId).stream()
-        .map(this::convertToDto)
-        .collect(Collectors.toList());
+    List<EventDto> eventList =
+        eventService.getEventsBySnakeId(snakeId).stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
 
-    return Response
-            .ok(eventList)
-            .build();
+    return Response.ok(eventList).build();
   }
 
   @DELETE
@@ -73,24 +64,20 @@ public class EventResource {
   public Response deleteEventById(
       @PathParam("snakeId") String snakeId, @PathParam("eventId") UUID eventId) {
 
-    if(eventService.deleteEventById(snakeId, eventId)) {
-      return Response
-              .ok("Event successfully deleted")
-              .build();
-    }else {
-      return Response
-              .ok("Was not able to delete the event")
-              .build();
+    if (eventService.deleteEventById(snakeId, eventId)) {
+      return Response.ok("Event successfully deleted").build();
+    } else {
+      return Response.ok("Was not able to delete the event").build();
     }
   }
 
   private Event convertFromDto(EventDto eventDto) {
     return new Event(
-            eventDto.getSnakeId(),
-            eventDto.getEventId(),
-            eventDto.getType(),
-            eventDto.getDate(),
-            eventDto.getInfo());
+        eventDto.getSnakeId(),
+        eventDto.getEventId(),
+        eventDto.getType(),
+        eventDto.getDate(),
+        eventDto.getInfo());
   }
 
   private EventDto convertToDto(Event event) {

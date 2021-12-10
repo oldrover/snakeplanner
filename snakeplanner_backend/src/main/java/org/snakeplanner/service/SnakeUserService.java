@@ -6,10 +6,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
-import org.snakeplanner.repository.dao.SnakeUserDao;
 import org.snakeplanner.dto.CreateUserDto;
 import org.snakeplanner.dto.LoginDto;
 import org.snakeplanner.entity.SnakeUser;
+import org.snakeplanner.repository.dao.SnakeUserDao;
 import org.snakeplanner.security.GenerateJWT;
 
 @ApplicationScoped
@@ -27,7 +27,7 @@ public class SnakeUserService {
   public SnakeUser loginUser(LoginDto loginDto) {
     SnakeUser snakeUser = authenticationService.authenticate(loginDto);
 
-    if(snakeUser == null){
+    if (snakeUser == null) {
       throw new InternalServerErrorException();
     }
     return snakeUser;
@@ -39,7 +39,7 @@ public class SnakeUserService {
 
     if (optionalUser.isPresent()) {
       SnakeUser returnedUser = optionalUser.get();
-      if(returnedUser.getEmail().equals(email)) {
+      if (returnedUser.getEmail().equals(email)) {
         return returnedUser;
       } else {
         throw new InternalServerErrorException();
@@ -64,7 +64,8 @@ public class SnakeUserService {
     random.nextBytes(salt);
     String encodedSalt = Base64.getEncoder().encodeToString(salt);
     String hashedPassword = hashService.getHashedValue(createUserDto.getPassword(), encodedSalt);
-    return new SnakeUser(createUserDto.getEmail(),createUserDto.getId(), encodedSalt, hashedPassword);
+    return new SnakeUser(
+        createUserDto.getEmail(), createUserDto.getId(), encodedSalt, hashedPassword);
   }
 
   public String generateUserJWT(String email, int expiration) {
