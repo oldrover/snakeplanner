@@ -1,56 +1,78 @@
-# snakeplanner_backend Project
+# SnakePlanner Backend
+<hr>
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+![image](./images/app.png)
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+This is the API for the [SnakePlanner App](https://snakeplanner.azurewebsites.net).
+It is built with the awesome [Quarkus](https://quarkus.io) Java Framework and [AstraDB](https://astra.datastax.com) as DBaaS. 
+The Frontend Repo can be found [here](https://github.com/oldrover/snakeplanner-frontend).
+
+##Description
+<hr>
+
+With SnakePlanner you are able to create and account and organize your snakes and its events like shedding, feeding etc.
+It is still in an early stage of developement and so far it offers just a basic functionality.
+
+Some goals for the near future are :
+
+- email alerts for feeding on regular basis
+- statistics for size and weight
+
+##Prerequisites
+<hr>
+For running this App locally you need:
+
+- JDK 11+ installed
+- Apache Maven 3.5.3+
+- A running [DataStax Astra](https://astra.datastax.com) database
+- A PublicKey and PrivateKey for JWT 
+
+For further Information on configuration for DB access and JWT keys, please refer to these references:
+
+- [Cassandra Quarkus quickstart guide](https://github.com/datastax/cassandra-quarkus/tree/main/quickstart)
+- [Quarkus guide: Using JWT RBAC](https://quarkus.io/guides/security-jwt)
 
 ## Running the application in dev mode
+<hr>
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
-./mvnw compile quarkus:dev
+./mvnw clean quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+Then you can visit `http://localhost:8080/swagger` for the API documentation and schemas.
 
-## Packaging and running the application
+![image](./images/swagger.png)
+
+
+## Packaging the application
+<hr>
 
 The application can be packaged using:
 ```shell script
 ./mvnw package
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+
+It builds the frontend and copies it to the `META-INF/resources` folder and then produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
 Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
 The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
-If you want to build an _über-jar_, execute the following command:
+## Dockerizing the application
+
+After packaging you can dockerize the application with:
 ```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+docker build -f src/main/docker/Dockerfile.jvm -t quarkus/snakeplanner_backend-jvm .
+```
+Then add a .env file with your secrets like this:
+```shell script
+CASSANDRA_USERNAME=your_username
+CASSANDRA_PASSWORD=your_password
+CASSANDRA_KEYSPACE=your_keyspace
+```
+and then run the container using:
+``` 
+docker run -i --rm -p 8080:8080 --env-file=.env quarkus/snakeplanner_backend-jvm
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/snakeplanner_backend-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
-
-## Provided Code
-
-### RESTEasy JAX-RS
-
-Easily start your RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
