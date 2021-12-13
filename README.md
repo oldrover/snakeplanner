@@ -1,5 +1,4 @@
 # SnakePlanner Backend
-<hr>
 
 ![image](./images/app.png)
 
@@ -8,7 +7,6 @@ It is built with the awesome [Quarkus](https://quarkus.io) Java Framework and [A
 The Frontend Repo can be found [here](https://github.com/oldrover/snakeplanner-frontend).
 
 ## Description
-<hr>
 
 With SnakePlanner you are able to create and account and organize your snakes and its events like shedding, feeding etc.
 It is still in an early stage of developement and so far it offers just a basic functionality.
@@ -19,7 +17,7 @@ Some goals for the near future are :
 - statistics for size and weight
 
 ## Prerequisites
-<hr>
+
 For running this App locally you need:
 
 - JDK 11+ installed
@@ -33,7 +31,7 @@ For further Information on configuration for DB access and JWT keys, please refe
 - [Quarkus guide: Using JWT RBAC](https://quarkus.io/guides/security-jwt)
 
 ## Running the application in dev mode
-<hr>
+
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
@@ -49,7 +47,7 @@ to `src/main/snakeplanner-frontend` and run `npm run prod`.
 
 
 ## Packaging the application
-<hr>
+
 
 Before packaging the application please clone the [frontend](https://github.com/oldrover/snakeplanner-frontend) to `src/main/snakeplanner-frontend`.
 
