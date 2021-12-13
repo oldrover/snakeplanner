@@ -43,3 +43,6 @@ nb-configuration.xml
 
 # excluding the Astra Connection zip
 secure-connect-testdb.zip
+
+# excluding the .pem files
+*.pem
