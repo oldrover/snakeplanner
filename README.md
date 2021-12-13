@@ -44,9 +44,14 @@ Then you can visit `http://localhost:8080/swagger` for the API documentation and
 
 ![image](./images/swagger.png)
 
+If you want to have the frontend attached to the project please clone the [frontend](https://github.com/oldrover/snakeplanner-frontend) 
+to `src/main/snakeplanner-frontend` and run `npm run prod`.
+
 
 ## Packaging the application
 <hr>
+
+Before packaging the application please clone the [frontend](https://github.com/oldrover/snakeplanner-frontend) to `src/main/snakeplanner-frontend`.
 
 The application can be packaged using:
 ```shell script

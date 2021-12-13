@@ -39,7 +39,8 @@ nb-configuration.xml
 .env
 
 # excluding frontend files as they are generated on build
-/src/main/resources/META-INF/resources
+/src/main/resources/META-INF/resources/*
+!index.html
 
 # excluding the Astra Connection zip
 secure-connect-testdb.zip
