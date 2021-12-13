@@ -7,7 +7,7 @@ This is the API for the [SnakePlanner App](https://snakeplanner.azurewebsites.ne
 It is built with the awesome [Quarkus](https://quarkus.io) Java Framework and [AstraDB](https://astra.datastax.com) as DBaaS. 
 The Frontend Repo can be found [here](https://github.com/oldrover/snakeplanner-frontend).
 
-##Description
+## Description
 <hr>
 
 With SnakePlanner you are able to create and account and organize your snakes and its events like shedding, feeding etc.
@@ -18,7 +18,7 @@ Some goals for the near future are :
 - email alerts for feeding on regular basis
 - statistics for size and weight
 
-##Prerequisites
+## Prerequisites
 <hr>
 For running this App locally you need:
 
