@@ -8,7 +8,7 @@ The Frontend Repo can be found [here](https://github.com/oldrover/snakeplanner-f
 
 ## Description
 
-With SnakePlanner you are able to create and account and organize your snakes and its events like shedding, feeding etc.
+With SnakePlanner you are able to create an account and organize your snakes and its events like shedding, feeding etc.
 It is still in an early stage of developement and so far it offers just a basic functionality.
 
 Some goals for the near future are :
