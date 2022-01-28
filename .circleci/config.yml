@@ -13,7 +13,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: git submodule sync
-      - run: git submodule update --init      
+      - run: git submodule update --remote --recursive      
       - run:
           name: Build and Test
           command: ./mvnw package    
