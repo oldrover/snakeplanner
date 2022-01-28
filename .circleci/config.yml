@@ -1,0 +1,27 @@
+version: 2.1
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+orbs:
+  docker: circleci/docker@2.0.1
+jobs:
+  build-test-push:
+    docker:
+      - image: cimg/openjdk:11.0
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: Build and Test
+          command: ./mvnw package
+    #  - docker/publish:
+    #     image: oldrover/snakeplanner
+    #      path: src/main/docker/Dockerfile.jvm
+    #      docker-username:
+    #      docker-password:
+
+# invoking jobs via workflows
+workflows:
+  snakeplanner:
+    jobs:
+      - build-test-push
