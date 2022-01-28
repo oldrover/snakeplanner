@@ -1,4 +1,6 @@
 version: 2.1
+orbs: 
+  azure-cli: circleci/azure-cli@1.2.0
 executors:
   snakeplanner_publisher:
     environment:
@@ -7,18 +9,23 @@ executors:
       CASSANDRA_PASSWORD: $CASSANDRA_PASS
       CASSANDRA_KEYSPACE: $CASSANDRA_KEY
       DOCKERHUB_USERNAME: $HUB_USERNAME
-      DOCKERHUB_PASSWORD: $HUB_PASSWORD
+      DOCKERHUB_PASSWORD: $HUB_PASSWORD      
     docker:
       - image: cimg/openjdk:11.0
 
 jobs:
   # Build and test Application and build a Docker image
-  build_and_test:
+  build_test_and_make_container:
     executor: snakeplanner_publisher   
-    steps:
+    steps:             
       # Checkout Backend
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker      
+      - azure-cli/install
+      - azure-cli/login-with-user:
+          azure-username:
+          azure-password:
+      - run: az resource list
       # Checkout the Frontend Submodule
       - run: git submodule sync
       - run: git submodule update --init --remote --recursive      
@@ -37,7 +44,7 @@ jobs:
             - ./image.tar
 
   #Push the Docker image to DockerHub
-  publish:
+  push_to_dockerhub:
     executor: snakeplanner_publisher
     steps:
       - attach_workspace:
@@ -57,8 +64,8 @@ jobs:
 workflows:
   snakeplanner_build_test_deploy:
     jobs:
-      - build_and_test      
-      - publish:
+      - build_test_and_make_container      
+      - push_to_dockerhub:
           requires:
-            - build_and_test
+            - build_test_and_make_container
             
