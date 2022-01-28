@@ -22,17 +22,6 @@ jobs:
       - run:
           name: Build and Test the Frontend and Backend
           command: ./mvnw package -DskipTests  
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  # Build and save the Docker image 
-  make_container:
-    executor: snakeplanner_publisher
-    steps:
-      - checkout
-      - setup_remote_docker
       - run:
           name: Build Docker image
           command: docker build -f src/main/docker/Dockerfile.jvm -t $IMAGE_NAME:latest .
@@ -65,12 +54,8 @@ jobs:
 workflows:
   snakeplanner_build_test_deploy:
     jobs:
-      - build_and_test
-      - make_container:
-          requires:
-            - build_and_test
+      - build_and_test      
       - publish:
           requires:
             - build_and_test
-            - make_container
-     
+            
