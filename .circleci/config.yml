@@ -13,9 +13,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: git submodule sync
-      - run: git submodule update --init
-      - run:
-          command: npm i -g npx
+      - run: git submodule update --init      
       - run:
           name: Build and Test
           command: ./mvnw package    
