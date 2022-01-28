@@ -6,17 +6,20 @@ executors:
       CASSANDRA_USERNAME: $CASSANDRA_USER
       CASSANDRA_PASSWORD: $CASSANDRA_PASS
       CASSANDRA_KEYSPACE: $CASSANDRA_KEY
+      DOCKERHUB_USERNAME: $HUB_USERNAME
+      DOCKERHUB_PASSWORD: $HUB_PASSWORD
     docker:
       - image: cimg/openjdk:11.0
 
 jobs:
-  # Build and test frontend and backend
+  # Build and test Application and build a Docker image
   build_and_test:
     executor: snakeplanner_publisher   
     steps:
+      # Checkout Backend
       - checkout
       - setup_remote_docker
-      #Checkout the Frontend Submodule
+      # Checkout the Frontend Submodule
       - run: git submodule sync
       - run: git submodule update --init --remote --recursive      
       - run:
@@ -46,7 +49,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:latest
       
 
