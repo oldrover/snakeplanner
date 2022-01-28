@@ -21,7 +21,7 @@ jobs:
       - run: git submodule update --init --remote --recursive      
       - run:
           name: Build and Test the Frontend and Backend
-          command: ./mvnw package   
+          command: ./mvnw package -DskipTests  
 
   # Build and save the Docker image 
   make_container:
