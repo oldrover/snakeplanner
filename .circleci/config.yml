@@ -3,26 +3,58 @@ executors:
   snakeplanner_publisher:
     environment:
       IMAGE_NAME: oldrover/snakeplanner
+      CASSANDRA_USERNAME: $CASSANDRA_USER
+      CASSANDRA_PASSWORD: $CASSANDRA_PASS
+      CASSANDRA_KEYSPACE: $CASSANDRA_KEY
     docker:
       - image: cimg/openjdk:11.0
 
 jobs:
+  # Build and test frontend and backend
   build_and_test:
     executor: snakeplanner_publisher   
     steps:
       - checkout
       - setup_remote_docker
+      #Checkout the Frontend Submodule
       - run: git submodule sync
       - run: git submodule update --init --remote --recursive      
       - run:
-          name: Build and Test
-          command: ./mvnw package    
+          name: Build and Test the Frontend and Backend
+          command: ./mvnw package   
 
-  publish:
+  # Build and save the Docker image 
+  make_container:
     executor: snakeplanner_publisher
     steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: docker build -f src/main/docker/Dockerfile.jvm -t $IMAGE_NAME:latest .
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+
+  #Push the Docker image to DockerHub
+  publish:
+    executor: snakeplanner_publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
       
 
 # invoking jobs via workflows
@@ -30,7 +62,11 @@ workflows:
   snakeplanner_build_test_deploy:
     jobs:
       - build_and_test
+      - make_container:
+          requires:
+            - build_and_test
       - publish:
           requires:
             - build_and_test
+            - make_container
      
