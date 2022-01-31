@@ -4,12 +4,7 @@ orbs:
 executors:
   snakeplanner_publisher:
     environment:
-      IMAGE_NAME: oldrover/snakeplanner
-      CASSANDRA_USERNAME: $CASSANDRA_USER
-      CASSANDRA_PASSWORD: $CASSANDRA_PASS
-      CASSANDRA_KEYSPACE: $CASSANDRA_KEY
-      DOCKERHUB_USERNAME: $HUB_USERNAME
-      DOCKERHUB_PASSWORD: $HUB_PASSWORD      
+      IMAGE_NAME: oldrover/snakeplanner           
     docker:
       - image: cimg/openjdk:11.0
 
@@ -31,10 +26,10 @@ jobs:
           command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/secure-connect-testdb.zip'$SAS_TOKEN --recursive .
       # Checkout the Frontend Submodule
       - run: git submodule sync
-      - run: git submodule update --init --remote --recursive      
+      - run: git submodule update --init --remote --recursive     
       - run:
           name: Build and Test the Frontend and Backend
-          command: ./mvnw package -DskipTests  
+          command: ./mvnw package -DskipTests        
       - run:
           name: Build Docker image
           command: docker build -f src/main/docker/Dockerfile.jvm -t $IMAGE_NAME:latest .
