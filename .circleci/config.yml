@@ -21,11 +21,14 @@ jobs:
       # Checkout Backend
       - checkout
       - setup_remote_docker      
-      - azure-cli/install
-      - azure-cli/login-with-user:
-          azure-username:
-          azure-password:
-      - run: az resource list
+      # Download azcopy 
+      - run:
+          name: Download azcopy
+          command: wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
+      # Get secure-connect file from storage
+      - run:
+          name: copy files from storage
+          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/secure-connect-testdb.zip'$SAS_TOKEN --recursive .
       # Checkout the Frontend Submodule
       - run: git submodule sync
       - run: git submodule update --init --remote --recursive      
