@@ -1,0 +1,3 @@
+[submodule "src/main/snakeplanner-frontend"]
+	path = src/main/snakeplanner-frontend
+	url = https://github.com/oldrover/snakeplanner-frontend.git

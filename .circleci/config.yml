@@ -1,0 +1,69 @@
+version: 2.1
+orbs: 
+  azure-cli: circleci/azure-cli@1.2.0
+executors:
+  snakeplanner_publisher:
+    environment:
+      IMAGE_NAME: oldrover/snakeplanner           
+    docker:
+      - image: cimg/openjdk:11.0
+
+jobs:
+  # Build and test Application and build a Docker image
+  build_test_and_make_container:
+    executor: snakeplanner_publisher   
+    steps:             
+      # Checkout Backend
+      - checkout
+      - setup_remote_docker      
+      # Download azcopy 
+      - run:
+          name: Download azcopy
+          command: wget -O azcopy_v10.tar.gz https://aka.ms/downloadazcopy-v10-linux && tar -xf azcopy_v10.tar.gz --strip-components=1
+      # Get secure-connect file from storage
+      - run:
+          name: copy files from storage
+          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/secure-connect-testdb.zip'$SAS_TOKEN --recursive .
+      # Checkout the Frontend Submodule
+      - run: git submodule sync
+      - run: git submodule update --init --remote --recursive     
+      - run:
+          name: Build and Test the Frontend and Backend
+          command: ./mvnw package -DskipTests        
+      - run:
+          name: Build Docker image
+          command: docker build -f src/main/docker/Dockerfile.jvm -t $IMAGE_NAME:latest .
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+
+  #Push the Docker image to DockerHub
+  push_to_dockerhub:
+    executor: snakeplanner_publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:latest
+      
+
+# invoking jobs via workflows
+workflows:
+  snakeplanner_build_test_deploy:
+    jobs:
+      - build_test_and_make_container      
+      - push_to_dockerhub:
+          requires:
+            - build_test_and_make_container
+            
