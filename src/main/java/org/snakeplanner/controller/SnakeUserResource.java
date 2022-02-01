@@ -6,7 +6,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.snakeplanner.dto.CreateUserDto;
 import org.snakeplanner.dto.LoginDto;
 import org.snakeplanner.dto.SnakeUserDto;
@@ -19,7 +18,6 @@ import org.snakeplanner.service.SnakeUserService;
 public class SnakeUserResource {
 
   @Inject SnakeUserService snakeUserService;
-  @Inject JsonWebToken jsonWebToken;
 
   private final Integer expirationTime = 900;
 
@@ -64,7 +62,6 @@ public class SnakeUserResource {
   @Path("/{id}")
   @RolesAllowed("User")
   public Response getUserById(@PathParam("id") UUID id, @Context SecurityContext ctx) {
-    System.out.println("Expiration Time: " + jsonWebToken.getExpirationTime());
     try {
       SnakeUserDto foundUser =
           convertToDto(snakeUserService.getUserByEmailAndId(ctx.getUserPrincipal().getName(), id));

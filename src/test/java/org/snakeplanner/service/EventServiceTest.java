@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.snakeplanner.entity.Event;
+import org.snakeplanner.entity.Snake;
+import org.snakeplanner.entity.SnakeUser;
 import org.snakeplanner.repository.dao.EventDao;
 
 @QuarkusTest
@@ -21,6 +23,8 @@ public class EventServiceTest {
 
   @Inject EventService eventService;
 
+  @InjectMock SnakeUserService snakeUserService;
+  @InjectMock SnakeService snakeService;
   @InjectMock EventDao eventDao;
 
   private Event event;
@@ -28,13 +32,23 @@ public class EventServiceTest {
   @BeforeEach
   void setUp() {
     UUID snakeId = UUID.randomUUID();
+    UUID userId = UUID.randomUUID();
     UUID uuid = UUID.randomUUID();
-    event = new Event(snakeId.toString(), uuid, "feed", LocalDate.of(2021, 10, 20), "jumper");
+    event = new Event(snakeId.toString(), uuid, "weight", LocalDate.of(2021, 10, 20), "400");
 
     MockPIEvent mockPIEvent = new MockPIEvent(event);
     when(eventDao.findById(snakeId.toString(), uuid)).thenReturn(Optional.of(event));
     when(eventDao.findById(snakeId.toString(), null)).thenReturn(Optional.empty());
     when(eventDao.findBySnakeId(snakeId.toString())).thenReturn(mockPIEvent);
+    when(snakeUserService.getUserByEmail("test@test.de"))
+        .thenReturn(new SnakeUser("test@test.de", userId, null, null));
+    when(snakeService.getSnakeById(userId.toString(), snakeId))
+        .thenReturn(new Snake(userId.toString(), snakeId, "", "", "", 0, (float) 0, (float) 0, ""));
+  }
+
+  @Test
+  public void whenSaveEvent_thenShouldNotThrowError() {
+    Assertions.assertDoesNotThrow(() -> eventService.saveEvent(event, "test@test.de"));
   }
 
   @Test
@@ -52,7 +66,9 @@ public class EventServiceTest {
 
   @Test
   public void whenFindEventsBySnakeId_thenReturnEvents() {
-    List<Event> foundEvent = eventService.getEventsBySnakeId(event.getSnakeId());
+    List<Event> foundEvents = eventService.getEventsBySnakeId(event.getSnakeId());
+    Assertions.assertNotNull(foundEvents);
+    Assertions.assertEquals(foundEvents.get(0), event);
   }
 
   @Test

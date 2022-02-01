@@ -58,6 +58,11 @@ public class SnakeUserService {
     return snakeUserDao.findByEmail(email).isEmpty();
   }
 
+  public SnakeUser getUserByEmail(String email) {
+    Optional<SnakeUser> optionalUser = snakeUserDao.findByEmail(email);
+    return optionalUser.orElse(null);
+  }
+
   public SnakeUser generateUserWithHashedPassword(CreateUserDto createUserDto) {
     SecureRandom random = new SecureRandom();
     byte[] salt = new byte[16];

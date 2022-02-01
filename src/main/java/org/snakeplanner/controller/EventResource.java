@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.snakeplanner.dto.EventDto;
 import org.snakeplanner.entity.Event;
@@ -22,10 +24,10 @@ public class EventResource {
 
   @POST
   @RolesAllowed("User")
-  public Response createEvent(EventDto eventDto) {
+  public Response createEvent(EventDto eventDto, @Context SecurityContext ctx) {
     try {
       eventDto.setEventId(UUID.randomUUID());
-      eventService.saveEvent(convertFromDto(eventDto));
+      eventService.saveEvent(convertFromDto(eventDto), ctx.getUserPrincipal().getName());
       return Response.ok("Event created").build();
 
     } catch (Exception exception) {

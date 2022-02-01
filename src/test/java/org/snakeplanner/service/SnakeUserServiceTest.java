@@ -42,6 +42,11 @@ public class SnakeUserServiceTest {
   }
 
   @Test
+  public void whenSaveUser_thenShouldNotThrowError() {
+    Assertions.assertDoesNotThrow(() -> snakeUserService.saveUser(snakeUser));
+  }
+
+  @Test
   public void whenLogin_thenUserShouldBeFound() {
     SnakeUser foundUser = snakeUserService.loginUser(loginDto);
     Assertions.assertNotNull(foundUser);
@@ -65,6 +70,13 @@ public class SnakeUserServiceTest {
   @Test
   public void whenEmailIsTaken_thenReturnFalse() {
     Assertions.assertFalse(snakeUserService.isEmailAvailable(snakeUser.getEmail()));
+  }
+
+  @Test
+  public void whenGetUserByEmail_themReturnUser() {
+    SnakeUser foundUser = snakeUserService.getUserByEmail(snakeUser.getEmail());
+    Assertions.assertNotNull(foundUser);
+    Assertions.assertEquals(snakeUser, foundUser);
   }
 
   @Test
