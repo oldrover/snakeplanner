@@ -24,12 +24,11 @@ jobs:
           name: copy secure-connect from storage
           command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/secure-connect-testdb.zip'$SAS_TOKEN --recursive .      
       - run:
-          name: copy public key from storage
-          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/privateKey.pem'$SAS_TOKEN --recursive /src/main/resources
-      # Get secure-connect file from storage
-      - run:
           name: copy private key from storage
-          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/publicKey.pem'$SAS_TOKEN --recursive /src/main/resources
+          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/privateKey.pem'$SAS_TOKEN --recursive ./src/main/resources      
+      - run:
+          name: copy public key from storage
+          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/publicKey.pem'$SAS_TOKEN --recursive ./src/main/resources
       # Checkout the Frontend Submodule
       - run: git submodule sync
       - run: git submodule update --init --remote --recursive     
