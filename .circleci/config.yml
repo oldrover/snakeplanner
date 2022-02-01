@@ -25,26 +25,24 @@ jobs:
           command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/secure-connect-testdb.zip'$SAS_TOKEN --recursive .      
       - run:
           name: copy private key from storage
-          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/privateKey.pem'$SAS_TOKEN --recursive ./src/main/resources      
-      - run:
-          name: copy public key from storage
-          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/publicKey.pem'$SAS_TOKEN --recursive ./src/main/resources
+          command: ./azcopy copy 'https://storagesnakeplanner.blob.core.windows.net/snakeplannerfiles/keys/*'$SAS_TOKEN --recursive ./src/main/resources     
+      
       # Checkout the Frontend Submodule
       - run: git submodule sync
       - run: git submodule update --init --remote --recursive     
-      - run:
-          name: Build and Test the Frontend and Backend
-          command: ./mvnw package -DskipTests        
-      - run:
-          name: Build Docker image
-          command: docker build -f src/main/docker/Dockerfile.jvm -t $IMAGE_NAME:latest .
-      - run:
-          name: Archive Docker image
-          command: docker save -o image.tar $IMAGE_NAME
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./image.tar
+      #- run:
+      #    name: Build and Test the Frontend and Backend
+      #    command: ./mvnw package -DskipTests        
+      #- run:
+      #    name: Build Docker image
+      #    command: docker build -f src/main/docker/Dockerfile.jvm -t $IMAGE_NAME:latest .
+      # run:
+      #   name: Archive Docker image
+      #    command: docker save -o image.tar $IMAGE_NAME
+      #- persist_to_workspace:
+      #    root: .
+      #    paths:
+      #      - ./image.tar
 
   #Push the Docker image to DockerHub
   push_to_dockerhub:
