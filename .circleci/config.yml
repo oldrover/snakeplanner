@@ -63,7 +63,7 @@ workflows:
   snakeplanner_build_test_deploy:
     jobs:
       - build_test_and_make_container      
-      - push_to_dockerhub:
-          requires:
-            - build_test_and_make_container
+      #- push_to_dockerhub:
+      #    requires:
+      #      - build_test_and_make_container
             
