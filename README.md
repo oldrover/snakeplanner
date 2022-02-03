@@ -42,14 +42,22 @@ Then you can visit `http://localhost:8080/swagger` for the API documentation and
 
 ![image](./images/swagger.png)
 
-If you want to have the frontend attached to the project please clone the [frontend](https://github.com/oldrover/snakeplanner-frontend) 
-to `src/main/snakeplanner-frontend` and run `npm run prod`.
+## Attaching the frontend to the project
+
+For cloning the frontend to its specific folder run:
+
+```
+git submodule sync
+```
+and then:
+```
+git submodule update --init --remote --recursive
+```
 
 
 ## Packaging the application
 
-
-Before packaging the application please clone the [frontend](https://github.com/oldrover/snakeplanner-frontend) to `src/main/snakeplanner-frontend`.
+Be sure the frontend-submodule was cloned to `src/main/snakeplanner-frontend`.   
 
 The application can be packaged using:
 ```shell script
