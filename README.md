@@ -1,4 +1,5 @@
-# SnakePlanner Backend
+# SnakePlanner Backend 
+![CircleCI](https://circleci.com/gh/oldrover/snakeplanner.svg?style=svg)
 
 ![image](./images/app.png)
 
