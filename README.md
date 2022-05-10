@@ -1,5 +1,6 @@
 # SnakePlanner Backend 
 ![CircleCI](https://circleci.com/gh/oldrover/snakeplanner.svg?style=svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=oldrover_snakeplanner&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=oldrover_snakeplanner)
 
 ![image](./images/app.png)
 
