@@ -19,7 +19,7 @@ public class SnakeUserResource {
 
   @Inject SnakeUserService snakeUserService;
 
-  private final Integer expirationTime = 900;
+  private final Integer EXPIRATION_TIME = 864000;
 
   @POST
   @PermitAll
@@ -49,7 +49,7 @@ public class SnakeUserResource {
       SnakeUser sn = snakeUserService.loginUser(loginDto);
       SnakeUserDto foundUser = convertToDto(sn);
 
-      jwt = snakeUserService.generateUserJWT(foundUser.getEmail(), expirationTime);
+      jwt = snakeUserService.generateUserJWT(foundUser.getEmail(), EXPIRATION_TIME);
 
       return Response.ok(foundUser).header("Authentication", "Bearer " + jwt).build();
 
@@ -88,10 +88,6 @@ public class SnakeUserResource {
   private SnakeUserDto convertToDto(SnakeUser user) {
     return new SnakeUserDto(user.getId(), user.getEmail());
   }
-
-  /*private SnakeUser convertFromDto(CreateUserDto createUserDto) {
-    return new SnakeUser( createUserDto.getEmail(),createUserDto.getId(), salt, createUserDto.getPassword());
-  }*/
 
   private SnakeUserDto buildCreateResponse(CreateUserDto createUserDto) {
     return new SnakeUserDto(createUserDto.getId(), createUserDto.getEmail());
