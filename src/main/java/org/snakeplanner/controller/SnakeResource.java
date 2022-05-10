@@ -23,7 +23,9 @@ public class SnakeResource {
   @RolesAllowed("User")
   public Response createSnake(SnakeDto snakeDto) {
     try {
-      snakeDto.setSnakeId(UUID.randomUUID());
+      if (snakeDto.getSnakeId() == null) {
+        snakeDto.setSnakeId(UUID.randomUUID());
+      }
       snakeService.saveSnake(convertFromDto(snakeDto));
       return Response.ok("Snake created").build();
     } catch (InternalServerErrorException exception) {
