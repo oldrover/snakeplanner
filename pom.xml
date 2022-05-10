@@ -5,10 +5,10 @@
   <groupId>com.datastax.oss.quarkus</groupId>
   <artifactId>cassandra-quarkus-quickstart</artifactId>
   <version>1.1.1</version>
-  <name>Cassandra Quarkus :: Quickstart</name>
-  <description>Quickstart Application for the Quarkus extension for Apache Cassandra(R)</description>
-  <url>https://github.com/datastax/cassandra-quarkus/quickstart</url>
-  <inceptionYear>2020</inceptionYear>
+  <name>SnakePlanner Backend</name>
+  <description>Backend for the Snakeplanner App</description>
+  <url>https://github.com/oldrover/snakeplanner</url>
+  <inceptionYear>2021</inceptionYear>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -40,6 +40,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>2.4.0.Final</quarkus.version>
+    <sonar.organization>oldrover</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -135,6 +137,31 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.7</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <formats>
+                <format>XML</format>
+              </formats>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
@@ -243,6 +270,37 @@
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <id>coverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.7</version>
+            <executions>
+              <execution>
+                <id>prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>report</id>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <formats>
+                    <format>XML</format>
+                  </formats>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>native</id>
       <activation>
